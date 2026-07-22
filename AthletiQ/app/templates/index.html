@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}AthletiQ | Smarter Sports Intelligence{% endblock %}
+{% block content %}
+<section class="hero">
+    <div class="hero-grid" aria-hidden="true"></div>
+    <div class="container position-relative">
+        <div class="row align-items-center min-vh-hero"><div class="col-lg-8 col-xl-7">
+            <p class="eyebrow"><span></span> Multi-league sports intelligence</p>
+            <h1>See the game.<br><em>Know the numbers.</em></h1>
+            <p class="hero-copy">AthletiQ turns complex performance data into clear, decisive insight across the NFL, NBA, MLB, and NHL.</p>
+            <a class="btn btn-primary btn-lg" href="#leagues">Explore leagues <span aria-hidden="true">&rarr;</span></a>
+        </div></div>
+    </div>
+</section>
+<section class="leagues-section" id="leagues">
+    <div class="container">
+        <div class="section-heading d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3">
+            <div><p class="eyebrow"><span></span> Coverage</p><h2>Every league. One edge.</h2></div>
+            <p class="section-copy mb-0">Choose a league to preview the foundation for future analytics.</p>
+        </div>
+        <div class="row g-4 mt-3">
+            {% set leagues = [('NFL', 'Football', 'Every down tells a story.', 'nfl.index', '01'), ('NBA', 'Basketball', 'Read the game beyond the box score.', 'nba.index', '02'), ('MLB', 'Baseball', 'Make every pitch count.', 'mlb.index', '03'), ('NHL', 'Hockey', 'Find the signal in every shift.', 'nhl.index', '04')] %}
+            {% for abbr, name, tagline, endpoint, number in leagues %}
+            <div class="col-md-6 col-xl-3"><a class="league-card" href="{{ url_for(endpoint) }}">
+                <span class="card-number">{{ number }}</span><span class="league-abbr">{{ abbr }}</span>
+                <span class="league-name">{{ name }}</span><span class="league-tagline">{{ tagline }}</span>
+                <span class="card-arrow" aria-hidden="true">&rarr;</span>
+            </a></div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}{{ league }} Analytics | AthletiQ{% endblock %}
+{% block content %}
+<section class="placeholder-page"><div class="container"><div class="placeholder-panel">
+    <p class="eyebrow"><span></span> {{ sport }} intelligence</p>
+    <p class="display-league" aria-hidden="true">{{ league }}</p>
+    <h1>{{ league }} analytics are coming next.</h1>
+    <p>This foundation is ready for future dashboards, team metrics, player insights, and game analysis.</p>
+    <a class="btn btn-outline-light" href="{{ url_for('home.index') }}">&larr; Back to all leagues</a>
+</div></div></section>
+{% endblock %}

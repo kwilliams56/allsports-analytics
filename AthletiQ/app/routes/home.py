@@ -1,0 +1,11 @@
+"""Homepage routes."""
+
+from flask import Blueprint, render_template
+
+home_bp = Blueprint("home", __name__)
+
+
+@home_bp.get("/")
+def index():
+    """Render the AthletiQ landing page."""
+    return render_template("index.html")

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="AthletiQ delivers clear, data-driven insights across professional sports.">
+    <title>{% block title %}AthletiQ{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" aria-label="Primary navigation">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('home.index') }}" aria-label="AthletiQ home"><span class="brand-mark">A</span><span>Athleti<span class="brand-accent">Q</span></span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('nfl.index') }}">NFL</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('nba.index') }}">NBA</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('mlb.index') }}">MLB</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('nhl.index') }}">NHL</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <main>{% block content %}{% endblock %}</main>
+    <footer class="site-footer">
+        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+            <a class="footer-brand" href="{{ url_for('home.index') }}">Athleti<span>Q</span></a>
+            <p class="mb-0">Built for fans who think beyond the scoreboard.</p>
+            <p class="mb-0">&copy; <span data-current-year></span> AthletiQ</p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
