@@ -37,6 +37,31 @@ body { background:var(--bg); color:var(--text); font-family:"Inter",sans-serif; 
 .placeholder-panel>p:not(.eyebrow):not(.display-league) { color:var(--muted); font-size:1.08rem; line-height:1.7; margin:1.7rem 0; max-width:38rem; position:relative; }
 .display-league { color:rgba(255,255,255,.025); font-family:"Oswald",sans-serif; font-size:clamp(10rem,28vw,25rem); font-weight:700; line-height:1; position:absolute; right:-1rem; top:-2rem; }
 .btn-outline-light { border-radius:.45rem; font-size:.8rem; font-weight:700; letter-spacing:.06em; padding:.75rem 1rem; position:relative; text-transform:uppercase; }
+.league-hero { background:radial-gradient(circle at 85% 20%,rgba(229,27,42,.2),transparent 24rem),linear-gradient(130deg,#111722,var(--bg)); border-bottom:1px solid var(--border); overflow:hidden; padding:clamp(4.5rem,9vw,7rem) 0 4rem; position:relative; }
+.league-hero::after { color:rgba(255,255,255,.025); content:"NFL"; font-family:"Oswald",sans-serif; font-size:clamp(10rem,28vw,24rem); font-weight:700; line-height:.8; position:absolute; right:-1rem; top:1rem; }
+.league-hero .container { z-index:1; }
+.league-hero h1 { font-family:"Oswald",sans-serif; font-size:clamp(3.7rem,9vw,7rem); font-weight:700; letter-spacing:-.035em; line-height:.9; margin:0; text-transform:uppercase; }
+.league-intro { color:var(--muted); font-size:clamp(1rem,2vw,1.15rem); line-height:1.7; margin-top:1.5rem!important; max-width:42rem; }
+.team-count { color:var(--muted); font-size:.78rem; letter-spacing:.08em; text-transform:uppercase; }
+.team-count strong { color:var(--text); font-family:"Oswald",sans-serif; font-size:2.1rem; margin-right:.35rem; }
+.teams-section { min-height:30rem; padding:5rem 0 7rem; }
+.team-card { background:linear-gradient(145deg,var(--surface-2),var(--surface)); border:1px solid var(--border); border-radius:.85rem; display:flex; flex-direction:column; min-height:17rem; overflow:hidden; position:relative; transition:border-color 200ms ease,box-shadow 200ms ease,transform 200ms ease; }
+.team-card::before { background:var(--accent); content:""; height:3px; inset:0 0 auto; transform:scaleX(.2); transform-origin:left; transition:transform 200ms ease; }
+.team-card:hover { border-color:rgba(229,27,42,.5); box-shadow:0 1.2rem 2.8rem rgba(0,0,0,.3); transform:translateY(-5px); }
+.team-card:hover::before { transform:scaleX(1); }
+.team-card-topline { align-items:center; display:flex; justify-content:space-between; padding:1.35rem 1.4rem; }
+.team-abbreviation { color:var(--accent-2); font-family:"Oswald",sans-serif; font-size:1.05rem; font-weight:700; letter-spacing:.08em; }
+.team-conference { border:1px solid var(--border); border-radius:2rem; color:#aeb7c4; font-size:.65rem; font-weight:700; letter-spacing:.12em; padding:.3rem .55rem; text-transform:uppercase; }
+.team-card-body { margin:auto 0; padding:1rem 1.4rem 2.2rem; }
+.team-location { color:var(--muted); font-size:.78rem; letter-spacing:.09em; margin:0 0 .35rem; text-transform:uppercase; }
+.team-card h2 { font-family:"Oswald",sans-serif; font-size:2.1rem; font-weight:600; margin:0; text-transform:uppercase; }
+.team-card-footer { align-items:center; border-top:1px solid var(--border); color:#778190; display:flex; font-size:.65rem; font-weight:600; gap:.45rem; letter-spacing:.06em; padding:1rem 1.4rem; text-transform:uppercase; }
+.team-dot { background:var(--accent); border-radius:50%; height:3px; width:3px; }
+.data-state { align-items:flex-start; background:var(--surface); border:1px solid var(--border); border-radius:1rem; display:flex; gap:1.2rem; margin:1rem auto; max-width:52rem; padding:clamp(1.5rem,4vw,2.5rem); }
+.data-state-error { border-color:rgba(229,27,42,.35); }
+.data-state-mark { align-items:center; background:rgba(229,27,42,.14); border:1px solid rgba(229,27,42,.35); border-radius:50%; color:var(--accent-2); display:flex; flex:0 0 2.5rem; font-family:"Oswald",sans-serif; font-size:1.2rem; height:2.5rem; justify-content:center; }
+.data-state h2 { font-family:"Oswald",sans-serif; font-size:1.6rem; margin:0 0 .45rem; text-transform:uppercase; }
+.data-state p { color:var(--muted); line-height:1.6; }
 .site-footer { background:#06080c; border-top:1px solid var(--border); color:#778190; font-size:.78rem; padding:2rem 0; }
 .footer-brand { font-size:1.1rem; }
 @media (max-width:767.98px) { .min-vh-hero{min-height:auto;padding:5.5rem 0}.hero h1{font-size:clamp(3.1rem,15vw,4.8rem)}.leagues-section{padding:4.5rem 0}.league-card{min-height:16rem}.league-abbr{margin-top:2rem} }

@@ -1,3 +1,68 @@
-{% set league = "NFL" %}
-{% set sport = "Football" %}
-{% extends "league_placeholder.html" %}
+{% extends "base.html" %}
+
+{% block title %}NFL Teams | AthletiQ{% endblock %}
+
+{% block content %}
+<section class="league-hero nfl-hero">
+    <div class="container position-relative">
+        <p class="eyebrow"><span></span> Football intelligence</p>
+        <div class="row align-items-end g-4">
+            <div class="col-lg-8">
+                <h1>NFL teams</h1>
+                <p class="league-intro mb-0">Explore every club by conference and division through verified league data.</p>
+            </div>
+            {% if teams %}
+            <div class="col-lg-4 text-lg-end">
+                <p class="team-count mb-0"><strong>{{ teams|length }}</strong> teams loaded</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<section class="teams-section" aria-labelledby="teams-heading">
+    <div class="container">
+        <div class="visually-hidden" id="teams-heading">NFL team directory</div>
+
+        {% if error_message %}
+        <div class="data-state data-state-error" role="alert">
+            <span class="data-state-mark" aria-hidden="true">!</span>
+            <div>
+                <h2>Team data unavailable</h2>
+                <p class="mb-0">{{ error_message }}</p>
+            </div>
+        </div>
+        {% elif not teams %}
+        <div class="data-state">
+            <span class="data-state-mark" aria-hidden="true">—</span>
+            <div>
+                <h2>No teams found</h2>
+                <p class="mb-0">The provider returned a valid response, but it did not contain any NFL teams.</p>
+            </div>
+        </div>
+        {% else %}
+        <div class="row g-4">
+            {% for team in teams %}
+            <div class="col-sm-6 col-lg-4 col-xl-3">
+                <article class="team-card h-100">
+                    <div class="team-card-topline">
+                        <span class="team-abbreviation">{{ team.abbreviation }}</span>
+                        <span class="team-conference">{{ team.conference }}</span>
+                    </div>
+                    <div class="team-card-body">
+                        <p class="team-location">{{ team.location }}</p>
+                        <h2>{{ team.name }}</h2>
+                    </div>
+                    <div class="team-card-footer">
+                        <span>{{ team.conference }} {{ team.division }}</span>
+                        <span class="team-dot" aria-hidden="true"></span>
+                        <span>Division</span>
+                    </div>
+                </article>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
