@@ -11,6 +11,8 @@ def create_app(config_class=None):
     """Create, configure, and return the Flask application."""
     app = Flask(__name__)
     app.config.from_object(config_class or get_config())
+    if app.config.get("REQUIRE_SECURE_SECRET") and not app.config.get("SECRET_KEY"):
+        raise RuntimeError("SECRET_KEY is required in production.")
     configure_logging(app)
 
     # Import locally to avoid circular imports during app creation.

@@ -6,6 +6,7 @@ import pytest
 import requests
 
 from app.services.base_client import SportsAPIClient
+from app.services.cache import MemoryTTLCache
 from app.services.exceptions import (
     SportsAPIAuthenticationError,
     SportsAPIConfigurationError,
@@ -68,6 +69,24 @@ def test_cache_prevents_an_immediate_duplicate_request():
 
     assert first == second
     session.request.assert_called_once()
+
+
+def test_shared_cache_is_partitioned_by_credential_without_storing_raw_key():
+    cache = MemoryTTLCache()
+    first_session = Mock(spec=requests.Session)
+    second_session = Mock(spec=requests.Session)
+    first_session.request.return_value = response(payload={"data": [1]})
+    second_session.request.return_value = response(payload={"data": [2]})
+    first = client(session=first_session, cache=cache, api_key="first-test-key")
+    second = client(session=second_session, cache=cache, api_key="second-test-key")
+
+    assert first.get_json("league/v1/resources") == {"data": [1]}
+    assert second.get_json("league/v1/resources") == {"data": [2]}
+    assert not hasattr(first, "api_key")
+    assert all("first-test-key" not in key for key in cache._entries)
+    assert all("second-test-key" not in key for key in cache._entries)
+    first_session.request.assert_called_once()
+    second_session.request.assert_called_once()
 
 
 def test_retries_server_error_with_exponential_backoff():
@@ -213,3 +232,9 @@ def test_missing_key_and_absolute_endpoint_are_rejected():
 
     with pytest.raises(SportsAPIConfigurationError):
         client().get_json("https://untrusted.example/resources")
+
+    with pytest.raises(SportsAPIConfigurationError, match="HTTPS"):
+        client(base_url="http://api.example.test")
+
+    with pytest.raises(SportsAPIConfigurationError, match="credential-free"):
+        client(base_url="https://username:password@api.example.test")

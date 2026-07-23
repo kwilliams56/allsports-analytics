@@ -1,5 +1,6 @@
 """Reliable, provider-agnostic HTTP client for documented sports APIs."""
 
+import hashlib
 import json
 import logging
 import time
@@ -41,7 +42,8 @@ class SportsAPIClient:
         sleep: Callable[[float], None] = time.sleep,
         logger: logging.Logger | None = None,
     ) -> None:
-        self.api_key = self._validate_api_key(api_key)
+        self._api_key = self._validate_api_key(api_key)
+        self._cache_namespace = hashlib.sha256(self._api_key.encode()).hexdigest()[:16]
         self.base_url = self._validate_base_url(base_url)
         if timeout_seconds <= 0:
             raise SportsAPIConfigurationError("API timeout must be greater than zero.")
@@ -116,7 +118,7 @@ class SportsAPIClient:
                     url,
                     params=params,
                     headers={
-                        "Authorization": self.api_key,
+                        "Authorization": self._api_key,
                         "Accept": "application/json",
                     },
                     timeout=self.timeout_seconds,
@@ -293,9 +295,16 @@ class SportsAPIClient:
     @staticmethod
     def _validate_base_url(base_url: str) -> str:
         parsed = urlparse(base_url)
-        if parsed.scheme not in {"http", "https"} or not parsed.netloc:
+        if (
+            parsed.scheme != "https"
+            or not parsed.netloc
+            or parsed.username is not None
+            or parsed.password is not None
+            or parsed.query
+            or parsed.fragment
+        ):
             raise SportsAPIConfigurationError(
-                "SPORTS_API_BASE_URL must be an absolute HTTP(S) URL."
+                "SPORTS_API_BASE_URL must be a credential-free absolute HTTPS URL."
             )
         return base_url.rstrip("/")
 
@@ -307,10 +316,12 @@ class SportsAPIClient:
             )
         return f"{self.base_url}/{endpoint.lstrip('/')}"
 
-    @staticmethod
-    def _cache_key(endpoint: str, params: Mapping[str, Any] | None) -> str:
+    def _cache_key(self, endpoint: str, params: Mapping[str, Any] | None) -> str:
         encoded = json.dumps(params or {}, sort_keys=True, separators=(",", ":"), default=str)
-        return f"sports-api:{endpoint.lstrip('/')}:{encoded}"
+        return (
+            f"sports-api:{self.base_url}:{self._cache_namespace}:"
+            f"{endpoint.lstrip('/')}:{encoded}"
+        )
 
     @staticmethod
     def _retry_after(response: requests.Response) -> float | None:

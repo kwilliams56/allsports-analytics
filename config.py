@@ -18,6 +18,7 @@ class BaseConfig:
     SECRET_KEY = os.getenv("SECRET_KEY", "dev-only-change-me")
     TESTING = False
     DEBUG = False
+    REQUIRE_SECURE_SECRET = False
 
     # The provider key remains environment-only; the generic client receives it
     # through Flask configuration and never reads or logs it directly.
@@ -57,6 +58,8 @@ class ProductionConfig(BaseConfig):
     """Production settings with Flask debugging disabled."""
 
     DEBUG = False
+    SECRET_KEY = os.getenv("SECRET_KEY")
+    REQUIRE_SECURE_SECRET = True
 
 
 CONFIG_BY_NAME: dict[str, Type[BaseConfig]] = {

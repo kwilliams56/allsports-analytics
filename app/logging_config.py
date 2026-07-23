@@ -11,6 +11,21 @@ class JSONFormatter(logging.Formatter):
     """Format log records as one-line JSON for local and hosted runtimes."""
 
     _standard_fields = set(logging.makeLogRecord({}).__dict__)
+    _sensitive_terms = ("authorization", "key", "password", "secret", "token")
+
+    @classmethod
+    def _safe_extra_fields(cls, record: logging.LogRecord) -> dict:
+        """Return structured extras with credential-like fields redacted."""
+        fields = {}
+        for key, value in record.__dict__.items():
+            if key in cls._standard_fields or key == "message":
+                continue
+            fields[key] = (
+                "[REDACTED]"
+                if any(term in key.lower() for term in cls._sensitive_terms)
+                else value
+            )
+        return fields
 
     def format(self, record: logging.LogRecord) -> str:
         payload = {
@@ -19,13 +34,7 @@ class JSONFormatter(logging.Formatter):
             "logger": record.name,
             "message": record.getMessage(),
         }
-        payload.update(
-            {
-                key: value
-                for key, value in record.__dict__.items()
-                if key not in self._standard_fields and key != "message"
-            }
-        )
+        payload.update(self._safe_extra_fields(record))
         if record.exc_info:
             payload["exception"] = self.formatException(record.exc_info)
         return json.dumps(payload, default=str)
@@ -39,3 +48,4 @@ def configure_logging(app: Flask) -> None:
     app.logger.handlers.clear()
     app.logger.addHandler(handler)
     app.logger.setLevel(logging.DEBUG if app.debug else logging.INFO)
+    app.logger.propagate = False

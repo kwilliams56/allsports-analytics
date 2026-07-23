@@ -23,3 +23,11 @@ def test_app_factory_accepts_testing_configuration():
     app = create_app(TestingConfig)
     assert app.testing is True
     assert app.test_client().get("/").status_code == 200
+
+
+def test_production_configuration_requires_an_explicit_secret():
+    class MissingProductionSecret(ProductionConfig):
+        SECRET_KEY = None
+
+    with pytest.raises(RuntimeError, match="SECRET_KEY"):
+        create_app(MissingProductionSecret)
