@@ -64,7 +64,7 @@ A task is complete only when:
 
 ## Current Priority
 
-- [ ] Verify the current official NFL provider documentation before changing endpoint code.
+- [x] Verify the current official NFL provider documentation before changing endpoint code.
 - [ ] Confirm the NFL teams endpoint is available on the current API plan.
 - [ ] Implement or finish the NFL teams service.
 - [ ] Normalize provider responses into an internal team model/dictionary.

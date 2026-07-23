@@ -64,6 +64,8 @@ Configuration profiles are selected with `APP_ENV=development`, `testing`, or `p
 
 The NFL page uses `NFLTeamsService` to fetch the documented free `GET /nfl/v1/teams` resource. The service validates the response and converts provider objects into immutable `NFLTeam` records containing only `name`, `location`, `conference`, `division`, and `abbreviation`. The base client caches the successful JSON response for the configured TTL; authentication failures and all other failures are never cached.
 
+Provider documentation was reverified on July 23, 2026. The official NFL reference continues to document `GET https://api.balldontlie.io/nfl/v1/teams`, direct API-key authentication through the `Authorization` header, and a top-level `data` array whose team objects include `id`, `conference`, `division`, `location`, `name`, `full_name`, and `abbreviation`. AthletiQ's existing endpoint path and normalized fields match that contract, so this review required no endpoint-code change.
+
 `NFLTeamsService.health_check()` checks provider availability through the same documented teams resource and benefits from the same cache. BALLDONTLIE does not document a separate NFL health endpoint.
 
 The Flask route receives normalized records from the configured service and renders the page server-side. It never constructs a provider URL or sends an HTTP request. Expected provider and network failures render a safe error panel while technical failure types and HTTP statuses are logged server-side without credentials or response data.
